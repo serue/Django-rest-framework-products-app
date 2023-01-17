@@ -1,0 +1,4 @@
+djando
+djangorestframework
+pyyaml
+requests
