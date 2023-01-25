@@ -11,4 +11,4 @@ endpoint ='http://localhost:8000/products/{product_id}/delete'
 
 get_response = requests.delete(endpoint)
 
-print(get_response.status_code, get_response.status_code==204) 
+print(get_response.status_code, get_response. status_code==204) 

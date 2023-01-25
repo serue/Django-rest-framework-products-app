@@ -1,10 +1,10 @@
-from rest_framework import generics
-
+from rest_framework import generics, permissions, authentication   
+from api.authentication import TokenAuthentication
 from .models import Product
 from .serializers import ProductSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from .permissions import IsStaffEditorPermission
 from django.shortcuts import get_object_or_404
 
 class ProductDetailAPIView(generics.RetrieveAPIView):
@@ -15,7 +15,8 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 class ProductCreateAPIView(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
+    authentication_classes =[authentication.SessionAuthentication]
+    permission_classes=[permissions.DjangoModelPermissions]
     def perform_create(self, serializer):
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content') or None
@@ -29,6 +30,7 @@ class ProductCreateAPIView(generics.CreateAPIView):
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes=[IsStaffEditorPermission]
 
 
 @api_view(['GET', 'POST'])
